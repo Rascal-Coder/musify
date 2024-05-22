@@ -5,7 +5,9 @@
  */
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
-
+const https = require("https");
+const fs = require("fs");
+const path = require("path");
 /**
  * Custom modules
  */
@@ -14,7 +16,6 @@ const login = require("./src/routes/login.route");
 // Initialize express app
 const express = require("express");
 const app = express();
-
 /**
  * Ejs setting
  */
@@ -34,7 +35,18 @@ app.use(cors()).use(cookieParser());
  * Login page
  */
 app.use("/login", login);
+const certPath = path.join(__dirname, "./ssl/musify.ras-cal.cc.pem");
+const keyPath = path.join(__dirname, "./ssl/musify.ras-cal.cc.key");
 
-app.listen(5000, () => {
-  console.log(`Server listening at http://localhost:5000`);
+const options = {
+  cert: fs.readFileSync(certPath),
+  key: fs.readFileSync(keyPath),
+};
+
+const server = https.createServer(options, app);
+
+// Start the server
+const PORT = 5000;
+server.listen(PORT, () => {
+  console.log(`Server listening at https://localhost:${PORT}`);
 });
