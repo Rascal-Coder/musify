@@ -25,7 +25,6 @@ const callback = async (req, res) => {
         const response = await getToken(code)
         if (response.status === 200) {
             const { access_token, refresh_token, expires_in } = response.data
-            console.log(response.data);
             res.cookie('access_token', access_token, { maxAge: expires_in * MILLISECONDS })
             res.cookie('refresh_token', refresh_token, { maxAge: ONE_WEEK })
             res.redirect('/')
