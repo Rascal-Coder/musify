@@ -13,7 +13,7 @@ const path = require("path");
  */
 const login = require("./src/routes/login.route");
 const auth = require("./src/routes/auth.route");
-
+const authenticatedUser = require("./src/middlewares/auth_user.middleware");
 // Initialize express app
 const express = require("express");
 const app = express();
@@ -38,6 +38,11 @@ app.use(cors()).use(cookieParser());
 app.use("/login", login);
 
 app.use("/auth", auth);
+/** 
+ * Authenticated user
+ */
+
+app.use(authenticatedUser);
 
 /**
  * SSL setting
